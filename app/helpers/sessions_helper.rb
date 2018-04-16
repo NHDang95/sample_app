@@ -8,7 +8,7 @@ module SessionsHelper
       		@current_user ||= User.find_by(id: user_id)
     	elsif (user_id = cookies.signed[:user_id]) #save user_id to remember_token
       		user = User.find_by(id: user_id)
-	    	if user && user.authenticated?(cookies[:remember_token]) #check user_id and authenticate remember_token with remember_digest
+	    	if user && user.authenticated?(:remember, cookies[:remember_token]) #check user_id and authenticate remember_token with remember_digest
         		log_in user
         		@current_user = user
       		end
