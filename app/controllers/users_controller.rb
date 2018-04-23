@@ -10,7 +10,7 @@ WillPaginate.per_page = 5
 
 	def show
 		@user = User.find(params[:id])
-		render :show #neu nhu ko goi render rails se tu dong goi den file trung ten voi phuong thuc
+		@microposts = @user.microposts.paginate(page: params[:page])
 	end
 
 	def	new
@@ -58,15 +58,6 @@ WillPaginate.per_page = 5
 	def user_params
 		params.require(:user).permit(:name,:email,:password,:password_confirmation)
 	end
-
-	#check if logged in
-  	def logged_in_user
-  		unless logged_in?
-  			store_location
-  			flash[:danger] = "Please Log In"
-  			redirect_to login_url
-  		end
-  	end
 
   	#check if user is correct
   	def correct_user

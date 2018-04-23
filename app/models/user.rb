@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   attr_accessor :remember_token, :activation_token, :reset_token
 	#info requirement
+  has_many :microposts, dependent: :destroy
 	before_save { self.email = email.downcase }
   before_save :downcase_email
   before_create :create_activation_digest
@@ -17,6 +18,10 @@ class User < ApplicationRecord
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
       BCrypt::Password.create(string, cost: cost)
+    end
+
+    def feed
+        Micropost.where("user_id = ?", id)
     end
 
     #return a random token
